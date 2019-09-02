@@ -1,14 +1,18 @@
 package com.scalors.hotels.marryat.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.scalors.hotels.marryat.dto.common.BaseDTOId;
 import com.scalors.marryat.hotels.entities.users.AccessType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.Column;
 
 @Data
-public class UserDTO {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class UserDTO extends BaseDTOId {
     @JsonProperty("id")
     private Long id;
     @JsonProperty("login")

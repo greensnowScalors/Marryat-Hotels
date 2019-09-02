@@ -36,7 +36,7 @@ public class LoggingAspect {
      */
     @Pointcut("within(com.scalors.hotels.marryat.repository..*)" +
             " || within(com.scalors.hotels.marryat.services..*)" +
-            " || within(com.scalors.hotels.marryat.controllers..*)")
+            " || within(com.scalors.hotels.marryat.resources..*)")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }

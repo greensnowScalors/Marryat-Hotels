@@ -18,9 +18,13 @@ import java.util.List;
  */
 public interface RoomService {
 
-    void addRoom(RoomDTO roomDTO);
+    RoomDTO getRoomById(Long roomId);
+
+    void createRoom(RoomDTO roomDTO);
 
     void updateRoom(RoomDTO roomDTO);
 
-    List<Room> getRoomsByRangeAndPaging(Long hotelId, Long roomId, LocalDate startReserveDay, LocalDate finishLocalDate);
+    void deleteRoomById(Long roomId);
+
+    List<Room> getRoomsByRange(Long hotelId, Long roomId, LocalDate startReserveDay, LocalDate finishLocalDate);
 }

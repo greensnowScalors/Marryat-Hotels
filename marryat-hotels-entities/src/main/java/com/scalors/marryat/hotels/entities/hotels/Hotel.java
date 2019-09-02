@@ -14,15 +14,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class Hotel.
- *
- * @author Alexandr Nezhelskyi
- * @version 1.0.
- * 30.08.19
- */
 @Builder
 @Data
 @NoArgsConstructor
@@ -36,7 +30,7 @@ public class Hotel extends BaseEntityId {
     private String name;
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Room> rooms;
+    private List<Room> rooms = new ArrayList<>();
 
 
 }

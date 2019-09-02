@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -32,13 +33,6 @@ import java.util.List;
 })
 public class Room extends BaseEntityId {
 
-
-//    @Column(name = "startReserveDay")
-//    private LocalDate startReserveDay;
-//
-//    @Column(name = "endReserveDay")
-//    private LocalDate endReserveDay;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
@@ -47,19 +41,6 @@ public class Room extends BaseEntityId {
     private String description;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reservation> rooms;
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<User> users;
-
-
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "UsersRooms"
-////            indexes = {@Index(name = "idx_room_roomId", columnList = "roomId")}
-//            , joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id")
-//            , inverseJoinColumns = @JoinColumn(name = "roomId", referencedColumnName = "id")
-//            , uniqueConstraints = {@UniqueConstraint(columnNames = {"roomId", "userId"})})
-//    private List<User> users;
-
+    private List<Reservation> rooms = new ArrayList<>();
 
 }

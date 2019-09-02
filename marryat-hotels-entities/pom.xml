@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>vtb-capital-entities</name>
+	<name>marryat-hotels-entities</name>
 	<description>Marryat hotels entities</description>
 
 	<parent>

@@ -8,5 +8,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserMapper extends CommonMapper<UserDTO, User> {
     @Override
-    UserDTO convert(User source);
+    UserDTO convertToDTO(User dto);
+
+    @Override
+    User convertToEntity(UserDTO entity);
 }

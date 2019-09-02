@@ -9,6 +9,7 @@ import com.scalors.hotels.marryat.repository.UserRepository;
 import com.scalors.hotels.marryat.services.UserService;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -21,32 +22,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDTO getUserById(Long userId) {
-        return userMapper.convert(
-                userRepository.getOne(userId)
-        );
+        return userMapper.convertToDTO(
+                userRepository.getOne(userId));
     }
 
     @Override
-    @Transactional
-    public UserDTO saveUser(UserDTO userDTO) {
-        return null;
+    public void createUser(UserDTO userDTO) {
+        userRepository.save(userMapper.convertToEntity(userDTO));
     }
 
     @Override
-    @Transactional
-    public UserDTO updateUser(UserDTO userDTO) {
-        return null;
+    public void updateUser(UserDTO userDTO) {
+        userRepository.save(userMapper.convertToEntity(userDTO));
     }
 
     @Override
-    public UserDTO deleteUser(UserDTO userDTO) {
-        return null;
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override
-    public Page<UserDTO> getUserList() {
+    @Transactional(readOnly = true)
+    public Page<UserDTO> getUserList(Long offset, Long limit) {
         return null;
     }
 

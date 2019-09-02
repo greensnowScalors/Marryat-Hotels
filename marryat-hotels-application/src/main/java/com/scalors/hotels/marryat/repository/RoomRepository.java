@@ -14,9 +14,8 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-
     @Query("select r from Room r join Hotel h join Reservation res where h.id = :hotelId " +
-            "and r.id =:roomId and res.startReserveDay between (:startReserveDay) and (:finishLocalDate)")
+            "and r.id =:roomId and  NOT (res.startReserveDay > (:startReserveDay) OR res.endReserveDay<(:finishLocalDate))")
     List<Room> getRoomsByRange(@Param("hotelId") Long hotelId, @Param("roomId") Long roomId,
                                @Param("startReserveDay") LocalDate startReserveDay, @Param("finishLocalDate") LocalDate finishLocalDate);
 }

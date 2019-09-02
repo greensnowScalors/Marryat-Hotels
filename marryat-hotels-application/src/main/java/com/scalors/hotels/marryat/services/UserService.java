@@ -3,23 +3,18 @@ package com.scalors.hotels.marryat.services;
 import com.scalors.hotels.marryat.dto.user.UserDTO;
 import org.springframework.data.domain.Page;
 
-/**
- * Interface UserService.
- *
- * @author Alexandr Nezhelskyi
- * @version 1.0.
- * 18.04.18
- */
+import java.util.List;
+
 public interface UserService {
 
     UserDTO getUserById(Long userId);
 
-    UserDTO saveUser(UserDTO userDTO);
+    void createUser(UserDTO userDTO);
 
-    UserDTO updateUser(UserDTO userDTO);
+    void updateUser(UserDTO userDTO);
 
-    UserDTO deleteUser(UserDTO userDTO);
+    void deleteUserById(Long userId);
 
-    Page<UserDTO> getUserList();
+    Page<UserDTO> getUserList(Long offset, Long limit);
 
 }

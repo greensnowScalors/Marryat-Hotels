@@ -1,30 +1,24 @@
 package com.scalors.hotels.marryat.services;
 
-import com.scalors.hotels.marryat.dto.rooms.RoomDTO;
-import com.scalors.marryat.hotels.entities.rooms.Room;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
+import com.scalors.hotels.marryat.dto.reservations.RoomDTO;
 
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Interface RoomService.
- *
- * @author Alexandr Nezhelskyi
- * @version 1.0.
- * 01.09.19
- */
 public interface RoomService {
 
-    RoomDTO getRoomById(Long roomId);
+    RoomDTO getReservationById(Long id);
 
-    void createRoom(RoomDTO roomDTO);
+    void deleteReservationById(Long ReservationId);
 
-    void updateRoom(RoomDTO roomDTO);
+    void updateReservation(RoomDTO request);
 
-    void deleteRoomById(Long roomId);
+    Boolean checkReservation(RoomDTO request);
 
-    List<Room> getRoomsByRange(Long hotelId, Long roomId, LocalDate startReserveDay, LocalDate finishLocalDate);
+    void reservRoom(RoomDTO request);
+
+    List<RoomDTO> getReservatinsByUserId(Long userId);
+
+    List<RoomDTO> getRoomsByDateRange(LocalDate fromDate, LocalDate toDate);
+
 }

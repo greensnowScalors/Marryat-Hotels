@@ -1,12 +1,13 @@
 package com.scalors.hotels.marryat.services.impl;
 
 import com.scalors.hotels.marryat.dto.user.UserDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.scalors.hotels.marryat.mapper.UserMapper;
 import com.scalors.hotels.marryat.repository.UserRepository;
 import com.scalors.hotels.marryat.services.UserService;
+import com.scalors.marryat.hotels.entities.users.User;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public UserDTO getUserById(Long userId) {
         return userMapper.convertToDTO(
-                userRepository.getOne(userId));
+                userRepository.findById(userId).orElse(new User()));
     }
 
     @Override

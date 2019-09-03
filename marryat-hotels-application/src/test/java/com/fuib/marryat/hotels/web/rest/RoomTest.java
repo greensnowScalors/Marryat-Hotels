@@ -3,10 +3,10 @@ package com.fuib.marryat.hotels.web.rest;
 import com.fuib.marryat.hotels.repository.config.TestConfiguration;
 import com.fuib.marryat.hotels.repository.config.TestProperties;
 import com.fuib.marryat.hotels.repository.util.TestUtil;
+import com.scalors.hotels.marryat.dto.reservations.RoomDTO;
 import com.scalors.hotels.marryat.dto.user.UserDTO;
 import com.scalors.hotels.marryat.exceptions.ExceptionHandlerController;
-import com.scalors.hotels.marryat.resources.UserResource;
-import com.scalors.marryat.hotels.entities.users.AccessType;
+import com.scalors.hotels.marryat.resources.RoomResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,10 +23,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {TestConfiguration.class})
 @EnableConfigurationProperties(TestProperties.class)
 @Sql(scripts = "/data.sql")
-public class ClientsResourceTest {
+public class RoomTest {
 
     @Autowired
     private TestProperties properties;
@@ -46,26 +49,16 @@ public class ClientsResourceTest {
 
 
     @Autowired
-    private UserResource userResource;
+    private RoomResource roomResource;
     private MockMvc restMockMvc;
 
     private UserDTO userDTO;
 
     @Before
     public void setup() {
-        restMockMvc = MockMvcBuilders.standaloneSetup(userResource)
+        restMockMvc = MockMvcBuilders.standaloneSetup(roomResource)
                 .setControllerAdvice(exceptionHandler)
                 .setConversionService(TestUtil.createFormattingConversionService())
-                .build();
-    }
-
-    @Before
-    public void init() {
-        this.userDTO = UserDTO.builder()
-                .accessType(AccessType.USER)
-                .firstName("test")
-                .lastName("test")
-                .login("testUser")
                 .build();
     }
 
@@ -75,30 +68,26 @@ public class ClientsResourceTest {
     }
 
     @Test
-    public void whenGetUserThenReturnItTest() throws Exception {
-
-        final MvcResult mvcResult = restMockMvc.perform(get("/users/{userId}", 1)
+    public void whenReservRoomThenCheckReservationReturnFalse() throws Exception {
+        final MvcResult mvcResult = restMockMvc.perform(get("/rooms/{userId}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.request().asyncStarted())
                 .andReturn();
 
         restMockMvc
                 .perform(asyncDispatch(mvcResult))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.login", is("test1")));
-
-
+                .andExpect(jsonPath("$.room_id", is(1)));
     }
 
-    private UserDTO getUserDTORequest() {
-        return UserDTO.builder()
-                .accessType(AccessType.USER)
-                .firstName("test")
-                .lastName("test")
-                .login("testUser")
+    private RoomDTO getReservationTemplate() {
+        return RoomDTO.builder()
+                .roomId(1L)
+                .userId(1L)
+                .comment("with pet")
+                .startReserveDay(LocalDate.now().plusDays(10))
+                .endReserveDay(LocalDate.now().plusDays(15))
                 .build();
-
     }
-
-
 }

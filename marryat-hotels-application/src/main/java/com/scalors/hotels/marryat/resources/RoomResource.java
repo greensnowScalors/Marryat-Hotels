@@ -1,11 +1,13 @@
 package com.scalors.hotels.marryat.resources;
 
-import com.scalors.hotels.marryat.dto.rooms.RoomDTO;
+import com.scalors.hotels.marryat.dto.reservations.RoomDTO;
 import com.scalors.hotels.marryat.services.RoomService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -19,37 +21,55 @@ public class RoomResource {
     }
 
     @PostMapping
-    public CompletableFuture<ResponseEntity> createRoom(RoomDTO request) {
+    public CompletableFuture<ResponseEntity> reservRoom(RoomDTO request) {
 
         return CompletableFuture
-                .runAsync(() -> roomService.createRoom(request))
+                .runAsync(() -> roomService.reservRoom(request))
                 .thenApply(ResponseEntity::ok);
     }
 
     @PutMapping
-    public CompletableFuture<ResponseEntity> updateRoom(RoomDTO roomDTO) {
+    public CompletableFuture<ResponseEntity> updateReservation(RoomDTO request) {
 
         return CompletableFuture
-                .runAsync(() -> roomService.updateRoom(roomDTO))
+                .runAsync(() -> roomService.updateReservation(request))
                 .thenApply(ResponseEntity::ok);
     }
 
-    @DeleteMapping("/{roomId}")
-    public CompletableFuture<ResponseEntity> deleteRoomById(@PathVariable Long roomId) {
+    @DeleteMapping("/{reservationId}")
+    public CompletableFuture<ResponseEntity> deleteReservationById(@PathVariable Long reservationId) {
 
         return CompletableFuture
-                .runAsync(() -> roomService.deleteRoomById(roomId))
+                .runAsync(() -> roomService.deleteReservationById(reservationId))
                 .thenApply(ResponseEntity::ok);
     }
 
-    @GetMapping
-    public CompletableFuture<ResponseEntity> getRoomsByRangeAndPaging(@RequestParam LocalDate startReserveDay,
-                                                                      @RequestParam LocalDate finishReserveDay,
-                                                                      @RequestParam Long hotelId,
-                                                                      @PathVariable Long roomId) {
+    @GetMapping(value = "/{userId}", produces = "application/json; charset=UTF-8")
+    public CompletableFuture<ResponseEntity<RoomDTO>> getReservationId(@PathVariable Long userId) {
 
         return CompletableFuture
-                .supplyAsync(() -> roomService.getRoomsByRange(hotelId, roomId, startReserveDay, finishReserveDay))
+                .supplyAsync(() -> roomService.getReservationById(userId))
+                .thenApply(ResponseEntity::ok);
+    }
+
+    @GetMapping(value = "/users/{userId}", produces = "application/json; charset=UTF-8")
+    public CompletableFuture<ResponseEntity<List<RoomDTO>>> getAllReservationsByUserId(@PathVariable Long userId) {
+
+        return CompletableFuture
+                .supplyAsync(() -> roomService.getReservatinsByUserId(userId))
+                .thenApply(ResponseEntity::ok);
+    }
+
+    @GetMapping(value = "/filter", produces = "application/json; charset=UTF-8")
+    public CompletableFuture<ResponseEntity<List<RoomDTO>>> getRoomsByDateRange(@RequestParam("from_date")
+                                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                                        LocalDate fromDate,
+                                                                                @RequestParam("to_date")
+                                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                                        LocalDate toDate) {
+
+        return CompletableFuture
+                .supplyAsync(() -> roomService.getRoomsByDateRange(fromDate, toDate))
                 .thenApply(ResponseEntity::ok);
     }
 

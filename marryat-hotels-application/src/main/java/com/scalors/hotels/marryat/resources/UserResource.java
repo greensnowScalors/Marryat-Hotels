@@ -1,15 +1,10 @@
 package com.scalors.hotels.marryat.resources;
 
-import com.scalors.hotels.marryat.dto.rooms.RoomDTO;
 import com.scalors.hotels.marryat.dto.user.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.*;
 import com.scalors.hotels.marryat.services.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.concurrent.CompletableFuture;
 
 

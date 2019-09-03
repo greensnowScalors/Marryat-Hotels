@@ -1,9 +1,13 @@
 package com.scalors.hotels.marryat.dto.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public abstract class BaseDTOId {
+@AllArgsConstructor
+@NoArgsConstructor
+public  class BaseDTOId {
 
     private Long id;
 

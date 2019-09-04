@@ -7,9 +7,6 @@ import com.scalors.hotels.marryat.services.RoomTemplateService;
 import com.scalors.marryat.hotels.entities.rooms.RoomTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 public class RoomTemplateServiceImpl implements RoomTemplateService {
 
@@ -42,12 +39,5 @@ public class RoomTemplateServiceImpl implements RoomTemplateService {
     public void deleteRoomById(Long roomId) {
         roomTemplateRepository.deleteById(roomId);
     }
-
-    @Override
-    public List<RoomTemplate> getRoomsByRange(Long hotelId, Long roomId, LocalDate startReserveDay, LocalDate finishReserveDay) {
-        return null;
-//                roomTemplateRepository.getRoomsByRange(hotelId, roomId, startReserveDay, finishReserveDay);
-    }
-
 
 }

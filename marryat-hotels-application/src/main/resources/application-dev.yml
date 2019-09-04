@@ -1,8 +1,7 @@
 logging:
     level:
         ROOT: WARN
-        com.fuib.clients: DEBUG
-        com.fuib.rmq.iib.adapter: DEBUG
+        com.scalors: DEBUG
 
 spring:
     profiles:

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/rooms")
@@ -20,58 +19,55 @@ public class RoomResource {
         this.roomService = roomService;
     }
 
-    @PostMapping
-    public CompletableFuture<ResponseEntity> reservRoom(RoomDTO request) {
-
-        return CompletableFuture
-                .runAsync(() -> roomService.reservRoom(request))
-                .thenApply(ResponseEntity::ok);
+    @PostMapping(produces = "application/json",
+            consumes = "application/json")
+    public ResponseEntity<?> reservRoom(@RequestBody RoomDTO request) {
+        roomService.reservRoom(request);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public CompletableFuture<ResponseEntity> updateReservation(RoomDTO request) {
-
-        return CompletableFuture
-                .runAsync(() -> roomService.updateReservation(request))
-                .thenApply(ResponseEntity::ok);
+    @PutMapping(produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> updateReservation(@RequestBody RoomDTO request) {
+        roomService.updateReservation(request);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{reservationId}")
-    public CompletableFuture<ResponseEntity> deleteReservationById(@PathVariable Long reservationId) {
-
-        return CompletableFuture
-                .runAsync(() -> roomService.deleteReservationById(reservationId))
-                .thenApply(ResponseEntity::ok);
+    @DeleteMapping(value = "/{reservationId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> deleteReservationById(@PathVariable Long reservationId) {
+        roomService.deleteReservationById(reservationId);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/{userId}", produces = "application/json; charset=UTF-8")
-    public CompletableFuture<ResponseEntity<RoomDTO>> getReservationId(@PathVariable Long userId) {
+    @GetMapping(value = "/{userId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<RoomDTO> getReservationId(@PathVariable Long userId) {
 
-        return CompletableFuture
-                .supplyAsync(() -> roomService.getReservationById(userId))
-                .thenApply(ResponseEntity::ok);
+        return ResponseEntity.ok(roomService.getReservationById(userId));
     }
 
-    @GetMapping(value = "/users/{userId}", produces = "application/json; charset=UTF-8")
-    public CompletableFuture<ResponseEntity<List<RoomDTO>>> getAllReservationsByUserId(@PathVariable Long userId) {
+    @GetMapping(value = "/users/{userId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<List<RoomDTO>> getAllReservationsByUserId(@PathVariable Long userId) {
 
-        return CompletableFuture
-                .supplyAsync(() -> roomService.getReservatinsByUserId(userId))
-                .thenApply(ResponseEntity::ok);
+        return ResponseEntity.ok(roomService.getReservatinsByUserId(userId));
     }
 
-    @GetMapping(value = "/filter", produces = "application/json; charset=UTF-8")
-    public CompletableFuture<ResponseEntity<List<RoomDTO>>> getRoomsByDateRange(@RequestParam("from_date")
-                                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                                        LocalDate fromDate,
-                                                                                @RequestParam("to_date")
-                                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                                                                                        LocalDate toDate) {
-
-        return CompletableFuture
-                .supplyAsync(() -> roomService.getRoomsByDateRange(fromDate, toDate))
-                .thenApply(ResponseEntity::ok);
+    @GetMapping(value = "/filter",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<List<RoomDTO>> getRoomsByDateRange(@RequestParam("from_date")
+                                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                     LocalDate fromDate,
+                                                             @RequestParam("to_date")
+                                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                     LocalDate toDate,
+                                                             @RequestParam("hotel_id") Long hotelId) {
+        return ResponseEntity.ok(roomService.getRoomsByDateRange(fromDate, toDate, hotelId));
     }
-
 
 }

@@ -5,8 +5,6 @@ import com.scalors.hotels.marryat.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.CompletableFuture;
-
 
 @RestController
 @RequestMapping("/users")
@@ -18,45 +16,34 @@ public class UserResource {
         this.userService = userService;
     }
 
-    @PostMapping
-    public CompletableFuture<ResponseEntity> createUser(UserDTO request) {
-
-        return CompletableFuture
-                .runAsync(() -> userService.createUser(request))
-                .thenApply(ResponseEntity::ok);
+    @PostMapping(produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> createUser(@RequestBody UserDTO request) {
+        userService.createUser(request);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/{userId}", produces = "application/json; charset=UTF-8")
-    public CompletableFuture<ResponseEntity> getUserById(@PathVariable Long userId) {
-        return CompletableFuture
-                .supplyAsync(() -> userService.getUserById(userId))
-                .thenApply(ResponseEntity::ok);
+    @GetMapping(value = "/{userId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getUserById(userId));
     }
 
-    @PutMapping
-    public CompletableFuture<ResponseEntity> updateUser(UserDTO request) {
-
-        return CompletableFuture
-                .runAsync(() -> userService.updateUser(request))
-                .thenApply(ResponseEntity::ok);
+    @PutMapping(produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO request) {
+        userService.updateUser(request);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{roomId}")
-    public CompletableFuture<ResponseEntity> deleteUserById(@PathVariable Long userId) {
+    @DeleteMapping(value = "/{roomId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.ok().build();
 
-        return CompletableFuture
-                .runAsync(() -> userService.deleteUserById(userId))
-                .thenApply(ResponseEntity::ok);
     }
-
-    @GetMapping
-    public CompletableFuture<ResponseEntity> getUsers(@RequestParam(name = "limit", required = false, defaultValue = "10") Long limit,
-                                                      @RequestParam(name = "offset", required = false, defaultValue = "0") Long offset) {
-
-        return CompletableFuture
-                .supplyAsync(() -> userService.getUserList(offset, limit))
-                .thenApply(ResponseEntity::ok);
-    }
-
 
 }

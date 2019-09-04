@@ -5,9 +5,6 @@ import com.scalors.hotels.marryat.services.RoomTemplateService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.concurrent.CompletableFuture;
-
 @RestController
 @RequestMapping("/rom-templates")
 public class RoomTemplateResource {
@@ -18,40 +15,28 @@ public class RoomTemplateResource {
         this.roomTemplateService = roomTemplateService;
     }
 
-    @PostMapping
-    public CompletableFuture<ResponseEntity> createRoom(RoomTemplateDTO request) {
+    @PostMapping(produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> createRoom(@RequestBody RoomTemplateDTO request) {
+        roomTemplateService.createRoom(request);
+        return ResponseEntity.ok().build();
 
-        return CompletableFuture
-                .runAsync(() -> roomTemplateService.createRoom(request))
-                .thenApply(ResponseEntity::ok);
     }
 
-    @PutMapping
-    public CompletableFuture<ResponseEntity> updateRoom(RoomTemplateDTO roomTemplateDTO) {
+    @PutMapping(produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> updateRoom(@RequestBody RoomTemplateDTO roomTemplateDTO) {
+        roomTemplateService.updateRoom(roomTemplateDTO);
+        return ResponseEntity.ok().build();
 
-        return CompletableFuture
-                .runAsync(() -> roomTemplateService.updateRoom(roomTemplateDTO))
-                .thenApply(ResponseEntity::ok);
     }
 
-    @DeleteMapping("/{roomId}")
-    public CompletableFuture<ResponseEntity> deleteRoomById(@PathVariable Long roomId) {
+    @DeleteMapping(value = "/{roomId}",
+            produces = "application/json; charset=UTF-8",
+            consumes = "application/json; charset=UTF-8")
+    public ResponseEntity<?> deleteRoomById(@PathVariable Long roomId) {
+        roomTemplateService.deleteRoomById(roomId);
+        return ResponseEntity.ok().build();
 
-        return CompletableFuture
-                .runAsync(() -> roomTemplateService.deleteRoomById(roomId))
-                .thenApply(ResponseEntity::ok);
     }
-
-    @GetMapping
-    public CompletableFuture<ResponseEntity> getRoomsByRangeAndPaging(@RequestParam LocalDate startReserveDay,
-                                                                      @RequestParam LocalDate finishReserveDay,
-                                                                      @RequestParam Long hotelId,
-                                                                      @PathVariable Long roomId) {
-
-        return CompletableFuture
-                .supplyAsync(() -> roomTemplateService.getRoomsByRange(hotelId, roomId, startReserveDay, finishReserveDay))
-                .thenApply(ResponseEntity::ok);
-    }
-
-
 }

@@ -12,20 +12,19 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends CrudRepository<Room, Long> {
 
-    @Query("select case when (count(r) > 0)  then true else false end from Room r " +
-            "join r.user u " +
-            "join r.room room where u.id = :userId and room.id = :roomId and  " +
-            " r.startReserveDay <= (:fromDate) and r.endReserveDay >= (:toDate)")
-    Boolean checkReservation(@Param("userId") Long userId, @Param("roomId") Long roomId,
-                             @Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
+    @Query("select case when (count(r) > 0)  then false else true end from Room r " +
+            " where r.roomNumber =:roomNumber and  " +
+            "(r.startReserveDay  between (:fromDate) and (:toDate)" +
+            " OR r.endReserveDay  between (:fromDate) and (:toDate))")
+    Boolean checkReservation(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate,@Param("roomNumber") Long roomNumber);
 
 
     @Query("select r from Room r where r.user.id =:userId")
     List<Room> getReservatinsByUserId(@Param("userId") Long userId);
 
 
-    @Query("select r from Room r where r.startReserveDay  between (:fromDate) AND (:toDate)" +
-            " OR r.endReserveDay  between (:fromDate) AND (:toDate) ")
-    List<Room> getRoomsByDateRange(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
+    @Query("select r from Room r join r.room rt where rt.hotel.id =:hotelId and (r.startReserveDay  between (:fromDate) AND (:toDate)" +
+            " OR r.endReserveDay  between (:fromDate) AND (:toDate)) ")
+    List<Room> getRoomsByDateRange(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate, @Param("hotelId") Long hotelId);
 
 }

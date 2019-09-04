@@ -19,6 +19,6 @@ public interface RoomService {
 
     List<RoomDTO> getReservatinsByUserId(Long userId);
 
-    List<RoomDTO> getRoomsByDateRange(LocalDate fromDate, LocalDate toDate);
+    List<RoomDTO> getRoomsByDateRange(LocalDate fromDate, LocalDate toDate, Long hotelId);
 
 }

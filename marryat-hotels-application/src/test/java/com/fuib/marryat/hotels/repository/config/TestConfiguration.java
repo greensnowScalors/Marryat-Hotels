@@ -1,5 +1,6 @@
 package com.fuib.marryat.hotels.repository.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,34 +14,17 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 @Configuration
 @ComponentScan(basePackages = {"com.scalors"},
-        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { SwaggerConfiguration.class}))
-//@EnableConfigurationProperties({ApplicationProperties.class})
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = {SwaggerConfiguration.class}))
 public class TestConfiguration {
-
-//    @MockBean
-//    public RetryTemplate retryTemplate;
-//    @Autowired
-//    private Jaxb2Marshaller jaxb2Marshaller;
-//
-//    @MockBean
-//    private TracerWrapper tracerWrapper;
-//
-//    @MockBean
-//    private WebServiceTemplate webServiceTemplate;
-//    @MockBean
-//    private WebServiceMessageSender webServiceMessageSender;
-//
-//    @Bean
-//    public Jaxb2Marshaller jaxb2Marshaller() {
-//        return jaxb2Marshaller;
-//    }
 
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper()
                 .registerModule(new ParameterNamesModule())
                 .registerModule(new Jdk8Module())
-                .registerModule(new JavaTimeModule());
+                .registerModule(new JavaTimeModule())
+                .enable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
+
     }
 
     @Bean
@@ -48,10 +32,5 @@ public class TestConfiguration {
         return new MappingJackson2HttpMessageConverter();
     }
 
-//    @Bean
-//    public ScroodgeDealingMessageSender scroodgeDealingMessageSender() {
-//        ScroodgeDealingMessageSender sender = new ScroodgeDealingMessageSender();
-//        sender.setWebServiceTemplate(webServiceTemplate);
-//        return sender;
-//    }
+
 }

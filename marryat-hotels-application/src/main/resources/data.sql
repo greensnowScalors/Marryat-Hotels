@@ -26,12 +26,12 @@ INSERT INTO Room_template (hotel_id, description) VALUES ('3','superior');
 
 
 -- --бронируем
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES ('1','1','2019-09-15','2019-09-18');
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES (1,1,'2019-09-18','2019-09-20');
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES (2,1,'2019-09-20','2019-09-22');
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (1,1,'2019-09-15','2019-09-18',1);
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (1,1,'2019-09-18','2019-09-20',2);
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (2,1,'2019-09-20','2019-09-22',3);
 
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES (2,2,'2019-09-15','2019-09-18');
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES (2,2,'2019-09-21','2019-09-22');
-INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day) VALUES (2,2,'2019-09-25','2019-09-28');
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (2,5,'2019-09-15','2019-09-18',4);
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (2,2,'2019-09-21','2019-09-22',5);
+INSERT INTO Room (user_id,room_id,start_reserve_day,end_reserve_day,room_number) VALUES (2,2,'2019-09-25','2019-09-28',6);
 
 

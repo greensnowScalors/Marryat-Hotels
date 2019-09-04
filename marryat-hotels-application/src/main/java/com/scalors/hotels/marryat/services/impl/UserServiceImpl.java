@@ -5,7 +5,6 @@ import com.scalors.hotels.marryat.mapper.UserMapper;
 import com.scalors.hotels.marryat.repository.UserRepository;
 import com.scalors.hotels.marryat.services.UserService;
 import com.scalors.marryat.hotels.entities.users.User;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +42,4 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<UserDTO> getUserList(Long offset, Long limit) {
-        return null;
-    }
-
 }

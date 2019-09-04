@@ -15,8 +15,8 @@ public interface RoomMapper extends CommonMapper<RoomDTO, Room> {
             @Mapping(target = "userId", source = "user.id"),
             @Mapping(target = "roomId", source = "room.id")
     })
-    RoomDTO convertToDTO(Room dto);
+    RoomDTO convertToDTO(Room entity);
 
     @Override
-    Room convertToEntity(RoomDTO entity);
+    Room convertToEntity(RoomDTO dto);
 }

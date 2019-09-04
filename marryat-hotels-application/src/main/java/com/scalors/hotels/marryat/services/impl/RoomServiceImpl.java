@@ -1,6 +1,7 @@
 package com.scalors.hotels.marryat.services.impl;
 
 import com.scalors.hotels.marryat.dto.reservations.RoomDTO;
+import com.scalors.hotels.marryat.exceptions.BadRequestException;
 import com.scalors.hotels.marryat.mapper.RoomMapper;
 import com.scalors.hotels.marryat.repository.RoomRepository;
 import com.scalors.hotels.marryat.services.RoomService;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.scalors.hotels.marryat.exceptions.ErrorsConstants.BAD_RESERVATION_DATES;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -36,20 +39,24 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void updateReservation(RoomDTO request) {
-        roomRepository.save(roomMapper.convertToEntity(request));
+        roomRepository.save(request.convertToEntity());
     }
 
     @Override
     public Boolean checkReservation(RoomDTO request) {
-        return roomRepository.checkReservation(request.getUserId(),
-                request.getRoomId(),
-                request.getStartReserveDay(),
-                request.getEndReserveDay());
+        return roomRepository.checkReservation(
+                request.getStartReserveDay(), request.getEndReserveDay(), request.getRoomId());
     }
 
     @Override
     public void reservRoom(RoomDTO request) {
-        roomRepository.save(roomMapper.convertToEntity(request));
+        if (roomRepository.checkReservation(
+                request.getStartReserveDay(), request.getEndReserveDay(), request.getRoomNumber())) {
+            roomRepository.save(request.convertToEntity());
+        } else {
+            throw new BadRequestException(BAD_RESERVATION_DATES);
+        }
+
     }
 
     @Override
@@ -61,8 +68,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDTO> getRoomsByDateRange(LocalDate fromDate, LocalDate toDate) {
-        return roomRepository.getRoomsByDateRange(fromDate, toDate)
+    public List<RoomDTO> getRoomsByDateRange(LocalDate fromDate, LocalDate toDate, Long hotelId) {
+        return roomRepository.getRoomsByDateRange(fromDate, toDate, hotelId)
                 .stream()
                 .map(roomMapper::convertToDTO)
                 .collect(Collectors.toList());

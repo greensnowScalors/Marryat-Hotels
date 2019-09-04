@@ -21,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
@@ -31,7 +30,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,46 +79,28 @@ public class RoomResourceTest {
 
     @Test
     public void whenReservRoomThenCheckReservationReturnFalse() throws Exception {
-        final MvcResult mvcResult = restMockMvc.perform(get("/rooms/{userId}", 1)
+        restMockMvc.perform(get("/rooms/{userId}", 1)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-                .andReturn();
-
-        restMockMvc
-                .perform(asyncDispatch(mvcResult))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.room_id", is(1)));
+
     }
 
     @Test
     public void whenReservRoomWithAvailableDatesThenReturnOk() throws Exception {
-        final MvcResult mvcResult = restMockMvc.perform(post("/rooms ")
+        restMockMvc.perform(post("/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(TestUtil.convertObjectToJsonBytes(roomDTO)))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-                .andReturn();
-
-        restMockMvc
-                .perform(asyncDispatch(mvcResult))
-                .andExpect(status().isOk());
+                .content(objectMapper.writeValueAsString(roomDTO)))
+                .andExpect(status().isBadRequest());
 
     }
 
     @Test
     public void whenReservRoomWithNotAvailableDatesThenReturnBadRequest() throws Exception {
-        final MvcResult mvcResult = restMockMvc.perform(post("/rooms ")
+        restMockMvc.perform(post("/rooms ")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(roomDTO)))
-                .andDo(print())
-                .andExpect(MockMvcResultMatchers.request().asyncStarted())
-                .andReturn();
-
-        restMockMvc
-                .perform(asyncDispatch(mvcResult))
                 .andExpect(status().is4xxClientError());
-
     }
 
     @Test
@@ -150,7 +130,7 @@ public class RoomResourceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(roomDTO)))
                 .andExpect(status().is4xxClientError());
-            }
+    }
 
     private RoomDTO getReservationTemplate() {
         return RoomDTO.builder()
